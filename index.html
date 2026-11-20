@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#10291f" />
+<title>Christmas Dinner · Entrance Check-In</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#183a30;background:#f6f3ed}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(180deg,#0a2a22 0,#153b30 245px,#f6f3ed 245px)}button,input{font:inherit}button{cursor:pointer}button:disabled{opacity:.55;cursor:not-allowed}header{color:#fff;padding:36px 20px 82px;text-align:center}header .eyebrow{color:#f2c879;text-transform:uppercase;letter-spacing:.24em;font-size:11px;font-weight:800}h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(31px,6vw,47px);font-weight:600;line-height:1.15;margin:12px 0 10px}header p{color:#d6e4db;margin:0;font-size:14px}.shell{max-width:920px;margin:-58px auto 48px;padding:0 16px}.card{background:#fff;border:1px solid #e4e4dd;border-radius:19px;box-shadow:0 16px 35px #0c2b1f12;padding:22px;margin-bottom:16px}.titleRow{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.h2{font-weight:800;font-size:18px;margin:0 0 6px}.desc{font-size:13px;color:#64746b;line-height:1.65;margin:0}.chip{font-size:12px;background:#eaf5ed;color:#216a45;padding:7px 10px;border-radius:999px;font-weight:750}.chip.wait{background:#fbf0e2;color:#875a19}.btn{border:0;background:#145a41;color:#fff;border-radius:11px;padding:12px 16px;min-height:44px;font-size:14px;font-weight:750}.btn.secondary{background:#fff;color:#225341;border:1px solid #bcd0c3}.btn.gold{background:#d6ae5c;color:#193b2e}.btn.danger{background:#f9e9e9;color:#96383d}.btn:focus-visible,input:focus-visible{outline:3px solid #e8b85b;outline-offset:2px}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:16px}#fileInput{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}.upload{border:2px dashed #a3c6b1;border-radius:15px;background:#f6faf7;padding:20px;margin-top:17px;text-align:center}.upload b{display:block;margin-bottom:6px}.upload small{display:block;color:#75867a;line-height:1.5;margin-bottom:13px}#workspace{display:none}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.stat{border:1px solid #e3eae3;border-radius:12px;padding:13px;background:#fbfcfa}.stat strong{font-size:24px;display:block}.stat span{color:#69786d;font-size:12px}.searchGrid{display:flex;gap:9px;margin-top:14px}.searchGrid input{width:100%;border:1px solid #b7c8bd;border-radius:11px;padding:13px;background:#fff;color:#153b2b;min-width:0}.muted{color:#77877e;font-size:12px;line-height:1.6}.note{border-radius:12px;padding:12px 13px;line-height:1.5;font-size:13px;margin-top:13px;background:#eef4f0;color:#285841}.note.warn{background:#fff2e0;color:#8b5a1a}.note.error{background:#fbeaea;color:#8c3338}.note.ok{background:#e3f5e9;color:#226647}.hidden{display:none!important}.results{margin-top:15px;display:grid;gap:8px}.result{border:1px solid #e2e8e2;background:#fff;padding:12px 14px;border-radius:12px;text-align:left;width:100%;display:flex;justify-content:space-between;align-items:center;gap:10px}.result:hover,.result:focus-visible{border-color:#43936d;background:#f5faf6}.result strong{display:block;margin-bottom:4px}.result small{color:#708076}.pill{display:inline-block;border-radius:99px;padding:5px 9px;background:#f3e7ce;color:#8e6116;font-size:11px;font-weight:800;white-space:nowrap}.pill.paid{background:#e5f6e9;color:#267448}.pill.entered{background:#edf1f5;color:#576d77}.detail{border-radius:14px;background:#f5f9f6;padding:18px;margin-top:15px}.gridDetails{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:14px 0}.gridDetails label{display:block;color:#698176;font-size:12px;margin-bottom:4px}.gridDetails b{word-break:break-word;font-size:14px}.bigName{font-family:Georgia,serif;font-size:26px}.privacy{padding:4px 8px 28px;color:#738478;font-size:12px;line-height:1.6;text-align:center}#dataArea{display:none}@media(max-width:600px){.card{padding:17px}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.stat{padding:10px}.stat strong{font-size:20px}.stat span{font-size:11px}.gridDetails{grid-template-columns:1fr}.searchGrid{display:block}.searchGrid button{margin-top:8px;width:100%}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+<header><div class="eyebrow">✦ Staff entrance ✦</div><h1>Christmas Dinner</h1><p>Guest search · Confirm entry · Excel attendance</p></header>
+<main class="shell">
+<section class="card">
+ <div class="titleRow"><div><h2 class="h2">1. Load your Excel guest list</h2><p class="desc">Choose the latest <b>.xlsx</b> file from your device. You can replace it whenever the registrations change.</p></div><span id="sheetChip" class="chip wait">No file loaded</span></div>
+ <div class="upload"><b>Import or reload the Excel file</b><small>Only the file you choose is used. Your guest list is not uploaded to GitHub or sent to a server.</small><input id="fileInput" type="file" accept=".xlsx,.xls" /><button type="button" class="btn" id="importBtn">Choose Excel file</button></div>
+ <div id="fileMessage" class="note hidden" role="status" aria-live="polite"></div>
+ <div id="workspace"><div class="stats"><div class="stat"><strong id="totalCount">0</strong><span>Registrations</span></div><div class="stat"><strong id="paidCount">0</strong><span>Paid guests</span></div><div class="stat"><strong id="enteredCount">0</strong><span>Checked in</span></div></div><p class="muted" id="loadedName"></p></div>
+</section>
+<section id="dataArea" class="card">
+ <div class="titleRow"><div><h2 class="h2">2. Find a guest</h2><p class="desc">Search by name, university ID, registration ID, or Paid ID.</p></div><span class="chip">Ready</span></div>
+ <div class="searchGrid"><input id="search" type="search" autocomplete="off" placeholder="Type guest name or ID..." aria-label="Search guest"/><button class="btn secondary" id="clearSearch">Clear</button></div>
+ <p class="muted" id="searchHelp">Type at least 2 characters to find a guest.</p><div id="results" class="results"></div>
+ <div id="guestPanel" class="detail hidden" aria-live="polite">
+  <span id="paymentPill" class="pill">Payment</span><h3 id="gName" class="bigName" style="margin:9px 0">Guest</h3>
+  <div class="gridDetails"><div><label>Registration ID</label><b id="gReg"></b></div><div><label>University ID</label><b id="gUni"></b></div><div><label>Payment</label><b id="gPayment"></b></div><div><label>Entry status</label><b id="gEntry"></b></div></div>
+  <div id="guestNotice" class="note hidden" role="status"></div>
+  <div class="actions"><button id="confirmBtn" class="btn gold">Confirm Entry</button><button id="cancelBtn" class="btn secondary">Back to search</button></div>
+ </div>
+</section>
+<section id="exportPanel" class="card hidden">
+ <h2 class="h2">3. Save your updated attendance</h2><p class="desc">After checking in guests, download a new Excel file with the entry dates written into <b>column F</b>. Your original file remains untouched.</p>
+ <div class="actions"><button id="exportBtn" class="btn">Download Updated Excel</button><button id="discardBtn" class="btn secondary">Clear this device’s check-in history</button></div>
+ <div class="note warn" id="exportWarning">This website does not automatically update the Excel file on other phones or in Google Drive. Export the updated file and use that file for the next shift.</div>
+</section>
+<p class="privacy">This is a static, browser-only check-in website. Do not commit spreadsheets containing guest personal data to a public GitHub repository. For multiple simultaneous staff devices, a shared backend is required to prevent duplicate admissions across devices.</p>
+</main>
+<script>
+(()=>{'use strict';
+ const $=id=>document.getElementById(id);
+ const STORAGE_KEY='christmasDinnerOfflineCheckins_v1';
+ const required=['Registration ID','Full Name','Payment','Checked In','Paid ID','University ID'];
+ let wb=null,ws=null,headers={},entries=[],selection=null,filename='',localMarks={};
+ const esc=s=>String(s??'');
+ const readMarks=()=>{try{const m=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}');return m&&typeof m==='object'?m:{}}catch{return {}}};
+ localMarks=readMarks();
+ function notify(msg,type=''){const e=$('fileMessage');e.className='note '+type;e.textContent=msg;e.classList.remove('hidden')}
+ function guestNotice(msg,type=''){const e=$('guestNotice');e.className='note '+type;e.textContent=msg;e.classList.remove('hidden')}
+ function clean(v){return String(v??'').trim()}
+ function norm(v){return clean(v).toUpperCase()}
+ function normHeader(v){return clean(v).toLowerCase().replace(/[^a-z0-9]/g,'')}
+ function status(v){return norm(v)==='PAID'}
+ function keyFor(e){return norm(e.paidId)||('REG:'+norm(e.registrationId))}
+ function fmtDate(value){if(value==null||value==='')return '';if(value instanceof Date)return value.toLocaleString();if(typeof value==='number'&&window.XLSX){const d=XLSX.SSF.parse_date_code(value);if(d)return `${String(d.y).padStart(4,'0')}-${String(d.m).padStart(2,'0')}-${String(d.d).padStart(2,'0')} ${String(d.H).padStart(2,'0')}:${String(d.M).padStart(2,'0')}`;}return clean(value)}
+ function cellValue(row,col){return ws[XLSX.utils.encode_cell({r:row,c:col})]?.v??''}
+ function setCell(row,col,value){const a=XLSX.utils.encode_cell({r:row,c:col});ws[a]={t:'s',v:String(value)};}
+ function loadWorkbook(workbook,name){
+   const sheetName=workbook.SheetNames.find(x=>x.toLowerCase()==='registrations');
+   if(!sheetName)throw Error('The Excel file needs a worksheet named Registrations.');
+   const sheet=workbook.Sheets[sheetName];const range=XLSX.utils.decode_range(sheet['!ref']||'A1:A1');
+   if(range.e.r>100000)throw Error('This file is too large for the browser check-in app.');
+   const map={};for(let c=range.s.c;c<=range.e.c;c++){map[normHeader(sheet[XLSX.utils.encode_cell({r:0,c})]?.v)]=c}
+   const miss=required.filter(x=>map[normHeader(x)]===undefined);if(miss.length)throw Error('Missing columns in row 1: '+miss.join(', '));
+   const h={};for(const x of required)h[x]=map[normHeader(x)];
+   const list=[];const seen=new Set();
+   for(let r=1;r<=range.e.r;r++){
+     const at=field=>sheet[XLSX.utils.encode_cell({r,c:h[field]})]?.v??'';
+     const e={row:r,registrationId:clean(at('Registration ID')),name:clean(at('Full Name')),payment:clean(at('Payment')),entered:at('Checked In'),paidId:clean(at('Paid ID')),universityId:clean(at('University ID'))};
+     if(!e.registrationId&&!e.name&&!e.paidId)continue;
+     const k=keyFor(e);if(seen.has(k))throw Error('Duplicate registration/Paid ID found in the Excel file: '+k);seen.add(k);
+     const local=localMarks[k];if(!fmtDate(e.entered)&&local?.checkedAt){e.entered=local.checkedAt;sheet[XLSX.utils.encode_cell({r,c:h['Checked In']})]={t:'s',v:local.checkedAt}}
+     list.push(e);
+   }
+   wb=workbook;ws=sheet;headers=h;entries=list;selection=null;filename=name;
+   $('workspace').style.display='block';$('dataArea').style.display='block';$('exportPanel').classList.remove('hidden');$('sheetChip').className='chip';$('sheetChip').textContent='Excel loaded';
+   $('loadedName').textContent=`Loaded: ${name} · ${sheetName} worksheet. You can import a newer file at any time.`;
+   $('search').value='';$('results').innerHTML='';$('guestPanel').classList.add('hidden');refreshStats();
+   notify(`${entries.length} guests loaded successfully. Existing check-ins on this device were retained when matching the same guest ID.`, 'ok');
+   $('searchHelp').textContent='Type a name or ID to search.';
+ }
+ function refreshStats(){ $('totalCount').textContent=entries.length;$('paidCount').textContent=entries.filter(e=>status(e.payment)).length;$('enteredCount').textContent=entries.filter(e=>!!fmtDate(e.entered)).length }
+ function renderSearch(){if(!wb)return;const q=norm($('search').value);$('results').replaceChildren();$('guestPanel').classList.add('hidden');selection=null;if(q.length<2){$('searchHelp').textContent='Type at least 2 characters.';return}
+  const found=entries.filter(e=>[e.name,e.registrationId,e.universityId,e.paidId].some(v=>norm(v).includes(q))).slice(0,30);
+  $('searchHelp').textContent=found.length?`${found.length}${found.length===30?'+' : ''} matching guest(s). Choose the correct person.`:'No matching guest found.';
+  for(const e of found){const b=document.createElement('button');b.type='button';b.className='result';const info=document.createElement('span');const n=document.createElement('strong');n.textContent=e.name||'Unnamed guest';const id=document.createElement('small');id.textContent=`${e.registrationId||'No registration ID'} · ${e.universityId||'No university ID'}`;info.append(n,id);const p=document.createElement('span');p.className='pill '+(fmtDate(e.entered)?'entered':status(e.payment)?'paid':'');p.textContent=fmtDate(e.entered)?'ENTERED':status(e.payment)?'PAID':'UNPAID';b.append(info,p);b.addEventListener('click',()=>showGuest(e));$('results').append(b)}
+ }
+ function showGuest(e){selection=e;$('gName').textContent=e.name||'—';$('gReg').textContent=e.registrationId||'—';$('gUni').textContent=e.universityId||'—';$('gPayment').textContent=e.payment||'—';$('gEntry').textContent=fmtDate(e.entered)||'Not entered';$('paymentPill').textContent=status(e.payment)?'PAID':'NOT PAID';$('paymentPill').className='pill '+(status(e.payment)?'paid':'');$('guestPanel').classList.remove('hidden');$('guestNotice').classList.add('hidden');$('confirmBtn').disabled=!status(e.payment)||!!fmtDate(e.entered);if(fmtDate(e.entered))guestNotice('Already entered — this guest cannot be checked in again on this device.','warn');else if(!status(e.payment))guestNotice('Payment is not PAID. Entry is blocked.','error');$('guestPanel').scrollIntoView({behavior:'smooth',block:'nearest'}) }
+ async function handleFile(f){if(!f)return;if(!/\.xlsx?$/i.test(f.name))return notify('Choose an .xlsx or .xls Excel file.','error');if(!window.XLSX)return notify('Excel reading library did not load. Check your internet connection and refresh the page.','error');try{const bytes=await f.arrayBuffer();const workbook=XLSX.read(bytes,{type:'array',cellDates:false,cellFormula:true,cellStyles:true});loadWorkbook(workbook,f.name)}catch(err){notify('Could not load Excel: '+(err.message||String(err)),'error')}finally{$('fileInput').value=''}}
+ $('importBtn').onclick=()=>$('fileInput').click();$('fileInput').onchange=e=>handleFile(e.target.files?.[0]);$('search').oninput=renderSearch;$('clearSearch').onclick=()=>{$('search').value='';renderSearch();$('search').focus()};$('cancelBtn').onclick=()=>{$('guestPanel').classList.add('hidden');selection=null};
+ $('confirmBtn').onclick=()=>{const e=selection;if(!e||!wb)return;if(!status(e.payment)||fmtDate(e.entered))return showGuest(e);if(!window.confirm(`Confirm entry for ${e.name || e.registrationId}?`))return;const timestamp=new Date().toLocaleString('sv-SE',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});const key=keyFor(e);e.entered=timestamp;setCell(e.row,headers['Checked In'],timestamp);localMarks[key]={checkedAt:timestamp};try{localStorage.setItem(STORAGE_KEY,JSON.stringify(localMarks))}catch{}refreshStats();renderSearch();showGuest(e);guestNotice('Entry confirmed locally. Download the updated Excel file to save it outside this browser.','ok');$('exportWarning').textContent='You have a confirmed entry. Download Updated Excel to save the attendance file and share it with the next staff shift.';};
+ $('exportBtn').onclick=()=>{if(!wb)return;try{const basename=filename.replace(/\.xlsx?$/i,'').replace(/[^\w -]+/g,'').trim()||'Christmas Dinner';const stamp=new Date().toISOString().slice(0,10);XLSX.writeFile(wb,`${basename} - Checked In ${stamp}.xlsx`,{compression:true});notify('Updated Excel downloaded. Use this file for your next check-in session.','ok')}catch(e){notify('Could not export: '+(e.message||String(e)),'error')}};
+ $('discardBtn').onclick=()=>{if(!window.confirm('Clear remembered check-ins on THIS device? This does not undo entries already written to the loaded file.'))return;localMarks={};localStorage.removeItem(STORAGE_KEY);notify('Saved device history cleared. Your currently loaded Excel data remains unchanged.','warn')};
+ window.addEventListener('beforeunload',e=>{if(!wb||!entries.some(x=>localMarks[keyFor(x)]))return;/* Page reload loses workbook; check-in marks remain in local storage */});
+})();
+</script>
+</body>
+</html>
